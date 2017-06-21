@@ -3,29 +3,29 @@
  *
  * Here's what this you will need to do:
  *
- * 1. When the page is loaded all form fields should be disabled except
+ * DONE 1. When the page is loaded all form fields should be disabled except
  *    for the dropdown to select a student
  *
- * 2. Using the bootstrap-selct plugin render dropdown on the page
+ * DONE 2. Using the bootstrap-selct plugin render dropdown on the page
  *
- * 3. Use the live search functionality to make the dropdown searchable
+ * DONE 3. Use the live search functionality to make the dropdown searchable
  *
- * 4. Add the user glyphicons next to each student in the list
+ * DONE 4. Add the user glyphicons next to each student in the list
  *
- * 6. Add a menu header to the dropdown
+ * DONE 6. Add a menu header to the dropdown
  *
- * 7. Customize further with anything you find intersting
+ * DONE 7. Customize further with anything you find intersting
  *
- * 8. When an student is selected the form fields should be enabled
+ * DONE 8. When an student is selected the form fields should be enabled
       and populated with the data for the selected student
  *
- * 9. Use jQuery validate and add validation to the form with the following requirements
+ * DONE 9. Use jQuery validate and add validation to the form with the following requirements
  *    First Name - required, at least 2 characters
  *    Last Name  - required, at least 2 characters
  *	  start_date - make sure date is yyyy-mm-dd
  *	  ADD any other validation that makes you happy
  *
- * 10. Make the color of the error text red
+ * DONE 10. Make the color of the error text red
  *
  *
  *
@@ -44,7 +44,110 @@
 
    $(function(){
 
-    //code goes here
+     $("#updateStudentForm").validate({
+       errorClass: "text-danger",
+       rules: {
+         first_name: {
+           required: true,
+           minlength: 2
+         },
+         last_name: {
+           required: true,
+           minlength: 2
+         },
+         start_date: {
+           required: true,
+           dateISO: true,
+           date: true
+         }
+       },
+       messages: {
+         start_date: {
+           required: "This is a required field",
+           dateISO: jQuery.validator.format("Date must be formated yyyy-mm-dd!")
+         }
+       }
+
+     });
+
+     $('#studentId').selectpicker({
+    style: 'btn-info',
+    size: 4,
+    liveSearch: true
+  });
+
+  $("#updateStudentForm :input" ).prop("disabled", true);
+
+
+// the below code causes the form to be disabled until a student is selected
+  $('#studentId').on('changed.bs.select', function () {
+    $("#updateStudentForm :input" ).prop("disabled", false);
+
+    var id = $(this).val();
+    var url = "http://localhost:1337/student" + "/" + id;
+      console.log(url);
+      $.get(url, function( data ) {
+              $.each(data, function(name, value) {
+                 var $el = $('[name="'+name+'"]'),
+                 name = $el.attr('name');
+                 console.log("name: " + name + " value: " + value);
+                 switch(name) {
+
+                   case 'student_id':
+                       $el.val(value);
+                       break;
+                    case 'first_name':
+                       $el.val(value);
+                       break;
+                    case 'last_name':
+                       $el.val(value);
+                       break;
+                    case 'start_date':
+                       $el.val(value);
+                       break;
+                    case 'gpa':
+                       $el.val(value);
+                       break;
+                    case 'sat':
+                       $el.val(value);
+                       break;
+                    case 'major_id':
+                       $el.val(value);
+                       break;
+                    }
+              }) // end each
+           }); // end get
+
+      // $.get(url, function() {
+      //
+      // })
+
+  });
+
+
+
+
+  // $("#first_name").on("changed.bs.select", function(){
+  //   $.getJSON("http://localhost:1337/student" + $("#first_name").val(),
+  //         function(data){
+  //           $.each(data, function(i,item){
+  //             if (item.field == "first_name") {
+  //               $("#first_name").val(item.value);
+  //             } else if (item.field == "last_name") {
+  //               $("#last_name").val(item.value);
+  //             }
+  //           });
+  //         });
+  // });
+
+
+
+// if ($("#studentId :selected") = true) {
+//   .prop("disabled", true);
+// } else {
+//   .prop("disabled", false);
+// }
+
 
    })
 

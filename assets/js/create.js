@@ -28,7 +28,39 @@
 
   $(function(){
 
-  	//code goes here
+    $("#addStudentForm").validate({
+      errorClass: "text-danger",
+      rules: {
+        first_name: {
+          required: true,
+          minlength: 2
+        },
+        last_name: {
+          required: true,
+          minlength: 2
+        },
+        start_date: {
+          required: true,
+          dateISO: true,
+          date: true
+        }
+      },
+      messages: {
+        first_name: {
+          required: "This is a required field",
+          dateISO: jQuery.validator.format("Must be more than one letter!")
+        },
+        last_name: {
+          required: "This is a required field",
+          dateISO: jQuery.validator.format("Must be more than one letter!")
+        },
+        start_date: {
+          required: "This is a required field",
+          dateISO: jQuery.validator.format("Date must be formated yyyy-mm-dd!")
+        }
+      }
+
+    });
 
   })
 
